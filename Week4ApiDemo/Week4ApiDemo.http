@@ -1,0 +1,24 @@
+﻿@Week4ApiDemo_HostAddress = https://localhost:7068
+
+GET {{Week4ApiDemo_HostAddress}}/api/customers
+
+###
+
+POST {{Week4ApiDemo_HostAddress}}/api/customers
+Content-Type: application/json
+
+{
+  "firstName": "Someone",
+  "lastName": "NotSomeone",
+  "address": "321 Kob",
+  "city": "Tob",
+  "state": "Nob",
+  "postalCode": "12345",
+  "orders": []
+}
+
+###
+
+DELETE {{Week4ApiDemo_HostAddress}}/api/customers/1003
+
+###

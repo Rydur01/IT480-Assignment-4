@@ -19,6 +19,27 @@ namespace Week4MvcDemo.Controllers
             _context = context;
         }
 
+        public async Task<IActionResult> ChooseCustomer()
+        {
+            var customers = await _context.Customers.ToListAsync();
+            List<SelectListItem> listItems = new();
+
+            foreach(var customer in customers)
+            {
+                var listItem = new SelectListItem
+                {
+                    Text = $"{customer.FirstName} {customer.LastName}",
+                    Value = customer.CustomerId.ToString()
+                };
+
+                ViewBag.Customers = listItems;
+
+                listItems.Add(listItem);
+            }
+
+            return View();
+        }
+
         // GET: Customers
         public async Task<IActionResult> Index()
         {

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StoreDatabase.Data;
+using System.Text.Json.Serialization;
 
 namespace Week4MvcDemo
 {
@@ -13,10 +14,20 @@ namespace Week4MvcDemo
 
             builder.Services.AddDbContext<StoreContext>(optionsBuilder =>
             {
-                optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("StoreDB"));
+                optionsBuilder
+                .UseLazyLoadingProxies()
+                .UseSqlServer(builder.Configuration.GetConnectionString("StoreDB"));
             });
 
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews()
+                .AddJsonOptions( jsonOptions =>
+                {
+                    // System.Text.Json
+                    jsonOptions.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+
+                    //Newtonsoft.Json
+                    //jsonOptions => options.SerializerSettings.RefenceLoopHandling = Newtonsoft.Json.Re...
+                });
 
             var app = builder.Build();
 
@@ -37,7 +48,7 @@ namespace Week4MvcDemo
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Customers}/{action=ChooseCustomer}");
 
             app.Run();
         }

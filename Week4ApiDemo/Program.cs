@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StoreDatabase.Data;
+using Week4ApiDemo.Controllers;
 
 namespace Week4ApiDemo
 {
@@ -18,6 +19,10 @@ namespace Week4ApiDemo
 
             builder.Services.AddControllers();
 
+            builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.AddSwaggerGen();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -28,12 +33,20 @@ namespace Week4ApiDemo
                 app.UseHsts();
             }
 
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            };
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
 
             app.MapControllers();
+
+            app.MapProductEndpoints();
 
             app.Run();
         }
